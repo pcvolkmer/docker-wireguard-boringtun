@@ -48,10 +48,6 @@ wg_1  |  - Generating 5 client configs and client QR codes
 wireguard_wg_1 exited with code 0
 ```
 
-### Remove old and create new config files
-
-Remove existing config files or rename device in `docker-compose.yml`. Run command `docker-compose up` again.
-
 ### Run the service
 
 Start the service in detached mode.
@@ -59,6 +55,20 @@ Start the service in detached mode.
 ```
 $ docker-compose up -d
 ```
+
+### Add new client
+
+Stop the service and run
+
+```
+$ docker-compose run wg add-client
+```
+
+This will create new client configuration and adds peer configuration to server config file.
+
+### Remove configuration and create new one from scratch
+
+Remove existing config files or rename device in `docker-compose.yml`. Run command `docker-compose up` again.
 
 ## Client configurations
 

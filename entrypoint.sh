@@ -12,6 +12,12 @@ if [ ! -f "/etc/wireguard/$DEVICE.conf" ]; then
   exit 0
 fi
 
+if [ "add-client" == "$1" ]; then
+  cd /etc/wireguard
+  /add-client.sh
+  exit 0
+fi
+
 echo "Starting wg-quick on $DEVICE"
 touch "${WG_LOG_FILE}"
 wg-quick up $DEVICE
