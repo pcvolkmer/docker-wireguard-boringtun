@@ -3,7 +3,17 @@
 SERVER_PUB_KEY=$(cat $DEVICE.conf | grep PrivateKey | sed 's/PrivateKey = //g' | wg pubkey)
 NETWORK=$(cat $DEVICE.conf | grep Address | sed 's/Address = //g; s/\.[0-9\/]*$//g')
 
-CLIENT_ID=$(($(ls $DEVICE-client_*.conf | grep ".conf" | tail -1 | sed "s/$DEVICE-client_//g; s/\.conf$//g")+1))
+for i in {1..240}; do
+  if [ ! -f "$DEVICE-client_$i.conf" ]; then
+    CLIENT_ID=$i
+    break
+  fi
+done
+
+if [ -z $CLIENT_ID ]; then
+  echo "Adding a new client not possible: No IP address available"
+  exit 1
+fi
 
 CLIENT_SEC_KEY=$(wg genkey)
 CLIENT_PUB_KEY=$(echo $CLIENT_SEC_KEY | wg pubkey)
@@ -14,13 +24,15 @@ cat << EOF >> $DEVICE.conf
 [Peer]
 PublicKey = ${CLIENT_PUB_KEY}
 AllowedIPs = $NETWORK.$(($CLIENT_ID+10))/32
-
+# <- $(date)
 EOF
 
 # Print out client configs
 cat <<EOF > $DEVICE-client_$CLIENT_ID.conf
 ##############
 # CLIENT $CLIENT_ID
+#
+# <- $(date)
 ##############
 
 [Interface]
