@@ -33,6 +33,9 @@ while [[ -z $CLIENTS ]]; do
   echo -n "Number of clients: "
   read CLIENTS
 done
+if [[ "240" > "$CLIENTS" ]]; then
+  CLIENTS=240
+fi
 echo " - Generating $CLIENTS client configs and client QR codes"
 
 SERVER_SEC_KEY=$(wg genkey)
@@ -54,7 +57,6 @@ cat <<EOF >> $DEVICE.conf
 ##############
 # SERVER
 ##############
-
 [Interface]
 Address = $NETWORK.1/24
 ListenPort = $SERVER_PORT
@@ -62,7 +64,7 @@ PrivateKey = $SERVER_SEC_KEY
 
 PostUp   = iptables -A FORWARD -i $DEVICE -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i $DEVICE -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-
+# <- $(date)
 EOF
 
 # Print out client peers
@@ -72,7 +74,7 @@ cat << EOF >> $DEVICE.conf
 [Peer]
 PublicKey = ${CLIENT_PUB_KEYS[$i]}
 AllowedIPs = $NETWORK.$(($i+10))/32
-
+# <- $(date)
 EOF
 done
 
@@ -82,8 +84,9 @@ for (( i=1; i<=$CLIENTS; i++ )); do
 cat <<EOF >> $DEVICE-client_$i.conf
 ##############
 # CLIENT $i
+#
+# <- $(date)
 ##############
-
 [Interface]
 Address = $NETWORK.$(($i+10))/24
 ListenPort = $SERVER_PORT
