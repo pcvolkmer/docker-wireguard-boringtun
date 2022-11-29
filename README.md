@@ -66,6 +66,16 @@ $ docker-compose run wg add-client
 
 This will create new client configuration and adds peer configuration to server config file.
 
+### Remove client
+
+Stop the service and run
+
+```
+$ docker-compose run wg rm-client 1
+```
+
+This will remove client with id '1' (or any other client for different id) configuration.
+
 ### Remove configuration and create new one from scratch
 
 Remove existing config files or rename device in `docker-compose.yml`. Run command `docker-compose up` again.
