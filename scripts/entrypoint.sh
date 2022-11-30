@@ -27,6 +27,15 @@ case "$1" in
     /scripts/rm-client.sh $2
     exit 0
     ;;
+  'show-client')
+    if [ -z $2 ]; then
+      echo "Usage: show-client <client id>"
+      exit 1
+    fi
+    cd /etc/wireguard
+    /scripts/show-client.sh $2
+    exit 0
+    ;;
   *)
     echo "Starting wg-quick on $DEVICE"
     touch "${WG_LOG_FILE}"
