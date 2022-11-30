@@ -66,6 +66,14 @@ $ docker-compose run wg add-client
 
 This will create new client configuration and adds peer configuration to server config file.
 
+### Show client config
+
+Run command to show client configuration and QR code.
+
+```
+$ docker-compose run wg show-client 1
+```
+
 ### Remove client
 
 Stop the service and run
