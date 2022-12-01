@@ -36,6 +36,11 @@ case "$1" in
     /scripts/show-client.sh $2
     exit 0
     ;;
+  'ls-configs')
+    cd /etc/wireguard
+    /scripts/ls-configs.sh
+    exit 0
+    ;;
   *)
     echo "Starting wg-quick on $DEVICE"
     touch "${WG_LOG_FILE}"
