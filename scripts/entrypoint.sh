@@ -13,12 +13,17 @@ if [ ! -f "/etc/wireguard/$DEVICE.conf" ]; then
 fi
 
 case "$1" in
-  'add-client')
+  'ls-configs' | 'ls')
+    cd /etc/wireguard
+    /scripts/ls-configs.sh
+    exit 0
+    ;;
+  'add-client' | 'add')
     cd /etc/wireguard
     /scripts/add-client.sh
     exit 0
     ;;
-  'rm-client')
+  'rm-client' | 'show')
     if [ -z $2 ]; then
       echo "Usage: rm-client <client id>"
       exit 1
@@ -27,7 +32,7 @@ case "$1" in
     /scripts/rm-client.sh $2
     exit 0
     ;;
-  'show-client')
+  'show-client' | 'show')
     if [ -z $2 ]; then
       echo "Usage: show-client <client id>"
       exit 1
@@ -36,10 +41,17 @@ case "$1" in
     /scripts/show-client.sh $2
     exit 0
     ;;
-  'ls-configs')
-    cd /etc/wireguard
-    /scripts/ls-configs.sh
-    exit 0
+  'help')
+    echo "Usage: <Command> [<Arguments>]"
+    echo
+    echo "Where Command is one of:"
+    echo
+    echo "ls      List server and clients sorted by creation date"
+    echo "add     Add new client"
+    echo "rm      Remove client by ID"
+    echo "show    Show client config with qrcode"
+    echo "help    Show this help message"
+    echo
     ;;
   *)
     echo "Starting wg-quick on $DEVICE"

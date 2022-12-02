@@ -56,33 +56,39 @@ Start the service in detached mode.
 $ docker-compose up -d
 ```
 
+### List server and client configs
+
+```
+$ docker-compose run wg ls
+```
+
 ### Add new client
 
 Stop the service and run
 
 ```
-$ docker-compose run wg add-client
+$ docker-compose run wg add
 ```
 
-This will create new client configuration and adds peer configuration to server config file.
-
-### Show client config
-
-Run command to show client configuration and QR code.
-
-```
-$ docker-compose run wg show-client 1
-```
+This will create new client configuration and adds peer configuration to server config file. Restart service.
 
 ### Remove client
 
 Stop the service and run
 
 ```
-$ docker-compose run wg rm-client 1
+$ docker-compose run wg rm 1
 ```
 
-This will remove client with id '1' (or any other client for different id) configuration.
+This will remove client with id '1' (or any other client for different id) configuration. Restart service.
+
+### Show client config
+
+Run command to show client configuration and QR code.
+
+```
+$ docker-compose run wg show 1
+```
 
 ### Remove configuration and create new one from scratch
 
