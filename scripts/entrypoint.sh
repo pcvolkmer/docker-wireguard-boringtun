@@ -41,6 +41,11 @@ case "$1" in
     /scripts/show-client.sh $2
     exit 0
     ;;
+  'purge')
+    cd /etc/wireguard
+    rm *.conf *.png
+    exit 0
+    ;;
   'help')
     echo "Usage: <Command> [<Arguments>]"
     echo
@@ -50,6 +55,7 @@ case "$1" in
     echo "add     Add new client"
     echo "rm      Remove client by ID"
     echo "show    Show client config with qrcode"
+    echo "purge   Remove server config and all client configs"
     echo "help    Show this help message"
     echo
     ;;

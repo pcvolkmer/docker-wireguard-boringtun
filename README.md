@@ -92,7 +92,12 @@ $ docker-compose run wg show 1
 
 ### Remove configuration and create new one from scratch
 
-Remove existing config files or rename device in `docker-compose.yml`. Run command `docker-compose up` again.
+Stop the service and run the following command to remove existing config files.
+
+```
+$ docker-compose run wg purge
+```
+Run command `docker-compose up` again to generate new config files.
 
 ## Client configurations
 
