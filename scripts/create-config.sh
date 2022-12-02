@@ -35,7 +35,7 @@ while [[ -z $CLIENTS ]]; do
   echo -n "Number of clients: "
   read CLIENTS
 done
-if [[ "240" > "$CLIENTS" ]]; then
+if (( $CLIENTS > 240 )); then
   CLIENTS=240
 fi
 echo " - Generating $CLIENTS client configs and client QR codes"
