@@ -4,11 +4,13 @@
 rm *.conf 2>/dev/null
 rm *-client_*.png 2>/dev/null
 
+echo "Create configuration files"
+
 while [[ -z $DEVICE ]]; do
   echo -n "Device (eg tun0):  "
   read DEVICE
 done
-echo " - Writing config to file $DEVICE.conf"
+echo " - Writing server config to file $DEVICE.conf"
 
 while [[ -z $SERVER_HOST ]]; do
   echo -n "Endpoint hostname: "

@@ -6,12 +6,6 @@ if [ -z $DEVICE ]; then
   DEVICE="tun0"
 fi
 
-if [ ! -f "/etc/wireguard/$DEVICE.conf" ]; then
-  cd /etc/wireguard
-  /scripts/create-config.sh
-  exit 0
-fi
-
 case "$1" in
   'ls-configs' | 'ls')
     cd /etc/wireguard
@@ -41,6 +35,16 @@ case "$1" in
     /scripts/show-client.sh $2
     exit 0
     ;;
+  'init')
+    if [ ! -f "/etc/wireguard/$DEVICE.conf" ]; then
+      cd /etc/wireguard
+      /scripts/create-config.sh
+      exit 0
+    else
+      echo "Existing config found: Run command 'purge' first."
+      exit 1
+    fi
+    ;;
   'purge')
     cd /etc/wireguard
     rm *.conf *.png
@@ -55,11 +59,16 @@ case "$1" in
     echo "add     Add new client"
     echo "rm      Remove client by ID"
     echo "show    Show client config with qrcode"
+    echo "init    Initialize service by creating config files"
     echo "purge   Remove server config and all client configs"
     echo "help    Show this help message"
     echo
     ;;
   *)
+    if [ ! -f "/etc/wireguard/$DEVICE.conf" ]; then
+      cd /etc/wireguard
+      /scripts/create-config.sh
+    fi
     echo "Starting wg-quick on $DEVICE"
     touch "${WG_LOG_FILE}"
     wg-quick up $DEVICE

@@ -36,7 +36,7 @@ If no environment variables are set, config creation script will ask you for set
 Run the service to create required keys and config files in directory `config.d`. It will print out used configuration params.
 
 ```
-$ docker-compose run wg
+$ docker-compose run wg init
 
 Starting wireguard_wg_1 ... done
 Attaching to wireguard_wg_1
@@ -48,13 +48,14 @@ wg_1  |  - Generating 5 client configs and client QR codes
 wireguard_wg_1 exited with code 0
 ```
 
-### Run the service
+### Start the service
 
 Start the service in detached mode.
 
 ```
 $ docker-compose up -d
 ```
+If creation of config files was skipped, configuration files will be created on first start.
 
 ### List server and client configs
 
@@ -97,7 +98,13 @@ Stop the service and run the following command to remove existing config files.
 ```
 $ docker-compose run wg purge
 ```
-Run command `docker-compose up` again to generate new config files.
+Reinitialize configureation
+
+```
+$ docker-compose run wg init
+```
+
+Restart service.
 
 ## Client configurations
 
