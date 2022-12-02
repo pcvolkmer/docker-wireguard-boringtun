@@ -17,7 +17,7 @@ case "$1" in
     /scripts/add-client.sh
     exit 0
     ;;
-  'rm-client' | 'show')
+  'rm-client' | 'rm')
     if [ -z $2 ]; then
       echo "Usage: rm-client <client id>"
       exit 1
