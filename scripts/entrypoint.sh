@@ -47,7 +47,8 @@ case "$1" in
     ;;
   'purge')
     cd /etc/wireguard
-    rm *.conf *.png
+    rm *.conf *.png 2>/dev/null
+    echo "Removed all configuration files"
     exit 0
     ;;
   'help')
