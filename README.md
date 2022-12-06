@@ -28,6 +28,7 @@ Customize the file `docker-compose`. You can change the following environment va
 * `SERVER_PORT`: The port the service should listen at
 * `NETWORK`: Some custom /24 network. e.g. `192.168.42.0`
 * `CLIENTS`: Number of clients for which configurations are to be created. Do not use more than 240 clients.
+* `DISABLE_FORWARD_ALL_TRAFFIC`: Use `true` or `yes` to not add iptables rules and do not forward all traffic.
 
 If no environment variables are set, config creation script will ask you for settings.
 
@@ -45,7 +46,14 @@ wg_1  |  - Using endpoint hostname example.com
 wg_1  |  - Using port 51820
 wg_1  |  - Using network 192.168.42.0/24
 wg_1  |  - Generating 5 client configs and client QR codes
+wg_1  |  - Forward all traffic
 wireguard_wg_1 exited with code 0
+```
+
+To disable traffic forwarding set `DISABLE_FORWARD_ALL_TRAFFIC` to `true` or `yes` or use
+
+```
+$ docker-compose run wg init --no-forward
 ```
 
 ### Start the service

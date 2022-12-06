@@ -40,6 +40,12 @@ if (( $CLIENTS > 240 )); then
 fi
 echo " - Generating $CLIENTS client configs and client QR codes"
 
+if [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "true" ] && [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "yes" ]; then
+  echo " - Forward all traffic"
+else
+  echo " - Do not forward all traffic"
+fi
+
 SERVER_SEC_KEY=$(wg genkey)
 SERVER_PUB_KEY=$(echo $SERVER_SEC_KEY | wg pubkey)
 
@@ -63,9 +69,17 @@ cat <<EOF >> $DEVICE.conf
 Address = $NETWORK.1/24
 ListenPort = $SERVER_PORT
 PrivateKey = $SERVER_SEC_KEY
+EOF
+
+if [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "true" ] && [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "yes" ]; then
+cat <<EOF >> $DEVICE.conf
 
 PostUp   = iptables -A FORWARD -i $DEVICE -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i $DEVICE -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+EOF
+fi
+
+cat <<EOF >> $DEVICE.conf
 # <- $(date)
 EOF
 

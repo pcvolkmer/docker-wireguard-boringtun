@@ -36,6 +36,9 @@ case "$1" in
     exit 0
     ;;
   'init')
+    if [ "$2" == "--no-forward" ]; then
+      export DISABLE_FORWARD_ALL_TRAFFIC="yes"
+    fi
     if [ ! -f "/etc/wireguard/$DEVICE.conf" ]; then
       cd /etc/wireguard
       /scripts/create-config.sh
