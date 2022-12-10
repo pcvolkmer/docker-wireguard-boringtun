@@ -23,10 +23,11 @@ $ docker-compose build
 
 Customize the file `docker-compose`. You can change the following environment variables as needed
 
-* `DEVICE`: Some `tun` device, e.g. `tun0`
+* `DEVICE`: Some `tun` device, defaults to `tun0`
 * `SERVER_HOST`: The host name of your server
 * `SERVER_PORT`: The port the service should listen at
-* `NETWORK`: Some custom /24 network. e.g. `192.168.42.0`
+* `NETWORK`: Some custom /24 network. Defaults to `192.168.42.0`
+* `MTU`: MTU to be used. Use default wireguard MTU if not set.
 * `CLIENTS`: Number of clients for which configurations are to be created. Do not use more than 240 clients.
 * `DISABLE_FORWARD_ALL_TRAFFIC`: Use `true` or `yes` to not add iptables rules and do not forward all traffic.
 
@@ -45,8 +46,9 @@ wg_1  |  - Writing config to file tun0.conf
 wg_1  |  - Using endpoint hostname example.com
 wg_1  |  - Using port 51820
 wg_1  |  - Using network 192.168.42.0/24
-wg_1  |  - Generating 5 client configs and client QR codes
+wg_1  |  - Using default MTU
 wg_1  |  - Forward all traffic
+wg_1  |  - Generating 5 client configs and client QR codes
 wireguard_wg_1 exited with code 0
 ```
 

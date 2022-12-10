@@ -30,6 +30,12 @@ else
 fi
 echo " - Using network $NETWORK.0/24"
 
+if [[ -z $MTU ]]; then
+  echo " - Using default MTU"
+else
+  echo " - Using MTU: $MTU"
+fi
+
 if [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "true" ] && [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "yes" ]; then
   echo " - Forward all traffic"
 else
@@ -65,6 +71,10 @@ Address = $NETWORK.1/24
 ListenPort = $SERVER_PORT
 PrivateKey = $SERVER_SEC_KEY
 EOF
+
+if [ $MTU ]; then
+echo "MTU = $MTU" >> $DEVICE.conf
+fi
 
 if [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "true" ] && [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "yes" ]; then
 cat <<EOF >> $DEVICE.conf
@@ -102,6 +112,13 @@ cat <<EOF >> $DEVICE-client_$i.conf
 Address = $NETWORK.$(($i+10))/24
 ListenPort = $SERVER_PORT
 PrivateKey = ${CLIENT_SEC_KEYS[$i]}
+EOF
+
+if [ $MTU ]; then
+echo "MTU = $MTU" >> $DEVICE-client_$i.conf
+fi
+
+cat <<EOF >> $DEVICE-client_$i.conf
 
 [Peer]
 PublicKey = $SERVER_PUB_KEY

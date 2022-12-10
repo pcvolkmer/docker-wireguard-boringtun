@@ -39,6 +39,13 @@ cat <<EOF > $DEVICE-client_$CLIENT_ID.conf
 Address = $NETWORK.$(($CLIENT_ID+10))/24
 ListenPort = $SERVER_PORT
 PrivateKey = ${CLIENT_SEC_KEY}
+EOF
+
+if [ $MTU ]; then
+echo "MTU = $MTU" >> $DEVICE-client_$CLIENT_ID.conf
+fi
+
+cat <<EOF >> $DEVICE-client_$CLIENT_ID.conf
 
 [Peer]
 PublicKey = $SERVER_PUB_KEY
