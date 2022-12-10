@@ -30,7 +30,7 @@ Customize the file `docker-compose`. You can change the following environment va
 * `CLIENTS`: Number of clients for which configurations are to be created. Do not use more than 240 clients.
 * `DISABLE_FORWARD_ALL_TRAFFIC`: Use `true` or `yes` to not add iptables rules and do not forward all traffic.
 
-If no environment variables are set, config creation script will ask you for settings.
+If a required environment variable is not set, config creation script will end with an error.
 
 ### Create config files
 

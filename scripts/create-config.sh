@@ -6,45 +6,40 @@ rm *-client_*.png 2>/dev/null
 
 echo "Create configuration files"
 
-while [[ -z $DEVICE ]]; do
-  echo -n "Device (eg tun0):  "
-  read DEVICE
-done
+if [[ -z $DEVICE ]]; then
+  DEVICE="tun0"
+fi
 echo " - Writing server config to file $DEVICE.conf"
 
-while [[ -z $SERVER_HOST ]]; do
-  echo -n "Endpoint hostname: "
-  read SERVER_HOST
-done
+if [[ -z $SERVER_HOST ]]; then
+  echo " ERROR: No server hostname!"
+  exit 1
+fi
 echo " - Using endpoint hostname $SERVER_HOST"
 
 if [[ -z $SERVER_PORT ]]; then
-  echo -n "Endpoint port:     "
-  read SERVER_PORT
+  echo " ERROR: No server port!"
+  exit 1
 fi
 echo " - Using port $SERVER_PORT"
 
 if [[ -z $NETWORK ]]; then
-  echo -n "Network (/24):     "
-  read NETWORK
+  NETWORK="192.168.42.0"
+else
+  NETWORK=$(echo -n $NETWORK | sed -r "s/\.[0-9]+$//")
 fi
-echo " - Using network $NETWORK/24"
-NETWORK=$(echo -n $NETWORK | sed -r "s/\.[0-9]+$//")
-
-while [[ -z $CLIENTS ]]; do
-  echo -n "Number of clients: "
-  read CLIENTS
-done
-if (( $CLIENTS > 240 )); then
-  CLIENTS=240
-fi
-echo " - Generating $CLIENTS client configs and client QR codes"
+echo " - Using network $NETWORK.0/24"
 
 if [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "true" ] && [ "$DISABLE_FORWARD_ALL_TRAFFIC" != "yes" ]; then
   echo " - Forward all traffic"
 else
   echo " - Do not forward all traffic"
 fi
+
+if (( $CLIENTS > 240 )); then
+  CLIENTS=240
+fi
+echo " - Generating $CLIENTS client configs and client QR codes"
 
 SERVER_SEC_KEY=$(wg genkey)
 SERVER_PUB_KEY=$(echo $SERVER_SEC_KEY | wg pubkey)
@@ -113,6 +108,7 @@ PublicKey = $SERVER_PUB_KEY
 AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = $SERVER_HOST:$SERVER_PORT
 EOF
+
 done
 
 # Create QR-codes for clients
