@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ ! -f "$DEVICE-client_$1.conf" ]; then
+  echo "No client $1"
+  exit 1
+fi
+
 CONFIG=$(cat "$DEVICE.conf" | sed "/^\# Client $1/{N;N;N;N;d}")
 
 echo "$CONFIG" > "$DEVICE.conf"
