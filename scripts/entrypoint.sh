@@ -64,6 +64,7 @@ case "$1" in
     echo "rm      Remove client by ID"
     echo "show    Show client config with qrcode"
     echo "init    Initialize service by creating config files"
+    echo "        Option '--no-forward' will disable forwarding"
     echo "purge   Remove server config and all client configs"
     echo "help    Show this help message"
     echo
