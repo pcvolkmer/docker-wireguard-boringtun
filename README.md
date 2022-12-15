@@ -48,7 +48,7 @@ wg_1  |  - Using port 51820
 wg_1  |  - Using network 192.168.42.0/24
 wg_1  |  - Using default MTU
 wg_1  |  - Forward all traffic
-wg_1  |  - Generating 5 client configs and client QR codes
+wg_1  |  - Generating 5 client configs
 wireguard_wg_1 exited with code 0
 ```
 

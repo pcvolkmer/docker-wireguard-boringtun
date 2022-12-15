@@ -45,7 +45,7 @@ fi
 if (( $CLIENTS > 240 )); then
   CLIENTS=240
 fi
-echo " - Generating $CLIENTS client configs and client QR codes"
+echo " - Generating $CLIENTS client configs"
 
 SERVER_SEC_KEY=$(wg genkey)
 SERVER_PUB_KEY=$(echo $SERVER_SEC_KEY | wg pubkey)
@@ -127,10 +127,3 @@ Endpoint = $SERVER_HOST:$SERVER_PORT
 EOF
 
 done
-
-# Create QR-codes for clients
-if [ ! -z "$(which qrencode 2>/dev/null)" ]; then
-  for (( i=1; i<=$CLIENTS; i++ )); do
-    qrencode -t png -o "$DEVICE-client_$i.png" < $DEVICE-client_$i.conf
-  done
-fi
