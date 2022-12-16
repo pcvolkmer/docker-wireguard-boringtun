@@ -53,9 +53,4 @@ AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = $SERVER_HOST:$SERVER_PORT
 EOF
 
-# Create QR-codes for clients
-if [ ! -z "$(which qrencode 2>/dev/null)" ]; then
-  qrencode -t png -o "$DEVICE-client_$CLIENT_ID.png" < $DEVICE-client_$CLIENT_ID.conf
-fi
-
 echo "Added Client # $CLIENT_ID"
