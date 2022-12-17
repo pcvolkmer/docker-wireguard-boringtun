@@ -13,6 +13,11 @@ case "$1" in
     exit 0
     ;;
   'add-client' | 'add')
+    if [ ! -z $2 ]; then
+      cd /etc/wireguard
+      /scripts/add-client.sh $2
+      exit 0
+    fi
     cd /etc/wireguard
     /scripts/add-client.sh
     exit 0

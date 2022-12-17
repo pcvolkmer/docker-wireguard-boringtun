@@ -15,8 +15,13 @@ if [ -z $CLIENT_ID ]; then
   exit 1
 fi
 
-CLIENT_SEC_KEY=$(wg genkey)
-CLIENT_PUB_KEY=$(echo $CLIENT_SEC_KEY | wg pubkey)
+if [ -z $1 ]; then
+  CLIENT_SEC_KEY=$(wg genkey)
+  CLIENT_PUB_KEY=$(echo $CLIENT_SEC_KEY | wg pubkey)
+else
+  CLIENT_SEC_KEY="<place secret key here>"
+  CLIENT_PUB_KEY=$1
+fi
 
 # Add peer config
 cat << EOF >> $DEVICE.conf
@@ -53,4 +58,8 @@ AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = $SERVER_HOST:$SERVER_PORT
 EOF
 
-echo "Added Client # $CLIENT_ID"
+if [ -z $1 ]; then
+  echo "Added Client # $CLIENT_ID"
+else
+  echo "Added Client # $CLIENT_ID with existing public key"
+fi

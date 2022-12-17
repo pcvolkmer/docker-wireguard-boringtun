@@ -83,6 +83,24 @@ $ docker-compose run wg add
 
 This will create new client configuration and adds peer configuration to server config file. Restart service.
 
+To add a client with existing public key run
+
+```
+$ docker-compose run wg add <given public key>
+```
+
+and replace `<given public key>` in command with public key created using `wg genkey`.
+The created client config will contain a placeholder for clients secret key in interface config.
+
+```
+...
+[Interface]
+Address = 192.168.42.123/24
+ListenPort = 51820
+PrivateKey = <place secret key here>
+...
+```
+
 ### Remove client
 
 Stop the service and run
