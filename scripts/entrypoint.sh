@@ -66,6 +66,7 @@ case "$1" in
     echo
     echo "ls      List server and clients sorted by creation date"
     echo "add     Add new client"
+    echo "        If optional PUBLIC key is provided, a new client with given public key will be registered."
     echo "rm      Remove client by ID"
     echo "show    Show client config with qrcode"
     echo "init    Initialize service by creating config files"
