@@ -19,6 +19,13 @@ if [ -z $1 ]; then
   CLIENT_SEC_KEY=$(wg genkey)
   CLIENT_PUB_KEY=$(echo $CLIENT_SEC_KEY | wg pubkey)
 else
+  # Check if public key is already used
+  for key in $(cat $DEVICE.conf | grep "PublicKey = " | sed "s/PublicKey = \(.*\)$/\1/"); do
+    if [[ "$1" == "$key" ]]; then
+      echo "Key '$1' already used!"
+      exit 1
+    fi
+  done
   CLIENT_SEC_KEY="<place secret key here>"
   CLIENT_PUB_KEY=$1
 fi
