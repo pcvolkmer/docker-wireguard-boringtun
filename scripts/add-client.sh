@@ -20,9 +20,11 @@ if [ -z $1 ]; then
   CLIENT_PUB_KEY=$(echo $CLIENT_SEC_KEY | wg pubkey)
 else
   # Check if public key is already used
-  for key in $(cat $DEVICE.conf | grep "PublicKey = " | sed "s/PublicKey = \(.*\)$/\1/"); do
-    if [[ "$1" == "$key" ]]; then
-      echo "Key '$1' already used!"
+  clients=($(cat $DEVICE.conf | grep "# Client" | sed "s/# Client \([0-9]*\)$/\1/"))
+  keys=($(cat $DEVICE.conf | grep "PublicKey = " | sed "s/PublicKey = \(.*\)$/\1/"))
+  for i in "${!keys[@]}"; do
+    if [[ "$1" = "${keys[$i]}" ]]; then
+      echo "Key '$1' already used in 'Client ${clients[$i]}'"
       exit 1
     fi
   done
