@@ -28,7 +28,18 @@ if [[ -z $NETWORK ]]; then
 else
   NETWORK=$(echo -n $NETWORK | sed -r "s/\.[0-9]+$//")
 fi
-echo " - Using network $NETWORK.0/24"
+echo " - Using v4 network $NETWORK.0/24"
+
+if [[ -z $NETWORK6 ]]; then
+  NETWORK6="fd42:$(hexdump -n 6 -e '2/1 "%02x" 1 ":"' /dev/random)"
+else
+  NETWORK6=$(echo -n $NETWORK6 | sed -r "s/\:[0-9a-f]*$//")
+  if [[ "$(echo $NETWORK6 | sed -e 's/.*\(\:\:\).*/\1/')" == "::" ]]; then
+    echo " ERROR: invalid v6 network $NETWORK6. Network must not contain '::'."
+    exit 1
+  fi
+fi
+echo " - Using v6 network $NETWORK6:/64"
 
 if [[ -z $MTU ]]; then
   echo " - Using default MTU"
@@ -67,7 +78,7 @@ cat <<EOF >> $DEVICE.conf
 # SERVER
 ##############
 [Interface]
-Address = $NETWORK.1/24
+Address = $NETWORK.1/24, $NETWORK6:1/64
 ListenPort = $SERVER_PORT
 PrivateKey = $SERVER_SEC_KEY
 EOF
@@ -94,7 +105,7 @@ cat << EOF >> $DEVICE.conf
 # Client $i
 [Peer]
 PublicKey = ${CLIENT_PUB_KEYS[$i]}
-AllowedIPs = $NETWORK.$(($i+10))/32
+AllowedIPs = $NETWORK.$(($i+10))/32, $NETWORK6:$(printf "%x" $(($i+10)))/128
 # <- $(date)
 EOF
 done
@@ -109,7 +120,7 @@ cat <<EOF >> $DEVICE-client_$i.conf
 # <- $(date)
 ##############
 [Interface]
-Address = $NETWORK.$(($i+10))/24
+Address = $NETWORK.$(($i+10))/24, $NETWORK6:$(printf "%x" $(($i+10)))/64
 ListenPort = $SERVER_PORT
 PrivateKey = ${CLIENT_SEC_KEYS[$i]}
 EOF

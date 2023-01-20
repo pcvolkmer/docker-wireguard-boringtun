@@ -1,7 +1,8 @@
 #!/bin/bash
 
 SERVER_PUB_KEY=$(cat $DEVICE.conf | grep PrivateKey | sed 's/PrivateKey = //g' | wg pubkey)
-NETWORK=$(cat $DEVICE.conf | grep Address | sed 's/Address = //g; s/\.[0-9\/]*$//g')
+NETWORK=$(cat $DEVICE.conf | grep Address | sed 's/Address = //g; s/\.[0-9\/]*,.*$//g')
+NETWORK6=$(cat $DEVICE.conf | grep Address | sed 's/Address = //g; s/^.*, //g; s/\:[0-9a-f\/]*$//g')
 
 for i in {1..240}; do
   if [ ! -f "$DEVICE-client_$i.conf" ]; then
@@ -37,7 +38,7 @@ cat << EOF >> $DEVICE.conf
 # Client $CLIENT_ID
 [Peer]
 PublicKey = ${CLIENT_PUB_KEY}
-AllowedIPs = $NETWORK.$(($CLIENT_ID+10))/32
+AllowedIPs = $NETWORK.$(($CLIENT_ID+10))/32, $NETWORK6:$(printf "%x" $(($CLIENT_ID+10)))/128
 # <- $(date)
 EOF
 
@@ -50,7 +51,7 @@ cat <<EOF > $DEVICE-client_$CLIENT_ID.conf
 ##############
 
 [Interface]
-Address = $NETWORK.$(($CLIENT_ID+10))/24
+Address = $NETWORK.$(($CLIENT_ID+10))/24, $NETWORK6:$(printf "%x" $(($CLIENT_ID+10)))/64
 ListenPort = $SERVER_PORT
 PrivateKey = ${CLIENT_SEC_KEY}
 EOF
