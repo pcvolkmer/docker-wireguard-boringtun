@@ -54,6 +54,7 @@ cat <<EOF > $DEVICE-client_$CLIENT_ID.conf
 Address = $NETWORK.$(($CLIENT_ID+10))/24, $NETWORK6:$(printf "%x" $(($CLIENT_ID+10)))/64
 ListenPort = $SERVER_PORT
 PrivateKey = ${CLIENT_SEC_KEY}
+DNS = $NETWORK.1
 EOF
 
 if [ $MTU ]; then
@@ -67,6 +68,9 @@ PublicKey = $SERVER_PUB_KEY
 AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = $SERVER_HOST:$SERVER_PORT
 EOF
+
+# Update dnsmasq hosts file
+/scripts/hosts.sh
 
 if [ -z $1 ]; then
   echo "Added Client # $CLIENT_ID"

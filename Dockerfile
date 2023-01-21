@@ -13,7 +13,7 @@ ENV WG_LOG_LEVEL info
 ENV WG_LOG_FILE /var/log/boringtun
 ENV WG_SUDO 1
 
-RUN apk --update add iproute2 wireguard-tools-wg-quick libqrencode
+RUN apk --update add iproute2 wireguard-tools-wg-quick libqrencode dnsmasq
 
 WORKDIR /scripts
 

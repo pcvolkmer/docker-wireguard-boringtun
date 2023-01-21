@@ -12,4 +12,7 @@ echo "$CONFIG" > "$DEVICE.conf"
 rm "$DEVICE-client_$1.conf" 2>/dev/null
 rm "$DEVICE-client_$1.png" 2>/dev/null
 
+# Update dnsmasq hosts file
+/scripts/hosts.sh
+
 echo "Client # $1 removed"

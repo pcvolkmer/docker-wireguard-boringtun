@@ -55,6 +55,7 @@ case "$1" in
     ;;
   'purge')
     cd /etc/wireguard
+    rm -rf hosts.d 2>/dev/null
     rm *.conf 2>/dev/null
     echo "Removed all configuration files"
     exit 0
@@ -81,8 +82,12 @@ case "$1" in
       /scripts/create-config.sh
     fi
     echo "Starting wg-quick on $DEVICE"
+    cd /etc/wireguard
+    /scripts/hosts.sh
+    cd -
     touch "${WG_LOG_FILE}"
     wg-quick up $DEVICE
+    dnsmasq -D --hostsdir=/etc/wireguard/hosts.d
     echo "done!"
     tail -f "${WG_LOG_FILE}"
     ;;

@@ -111,7 +111,6 @@ EOF
 done
 
 # Print out client configs
-
 for (( i=1; i<=$CLIENTS; i++ )); do
 cat <<EOF >> $DEVICE-client_$i.conf
 ##############
@@ -123,6 +122,7 @@ cat <<EOF >> $DEVICE-client_$i.conf
 Address = $NETWORK.$(($i+10))/24, $NETWORK6:$(printf "%x" $(($i+10)))/64
 ListenPort = $SERVER_PORT
 PrivateKey = ${CLIENT_SEC_KEYS[$i]}
+DNS = $NETWORK.1
 EOF
 
 if [ $MTU ]; then
@@ -138,3 +138,6 @@ Endpoint = $SERVER_HOST:$SERVER_PORT
 EOF
 
 done
+
+# Create dnsmasq hosts file
+/scripts/hosts.sh $NETWORK $NETWORK6
