@@ -138,5 +138,4 @@ Restart service.
 
 ## Client configurations
 
-You will find client configuration files for each client as config file and PNG file containing a QR code with
-client configuration in directory `config.d`.
+You will find client configuration files for each client as config file with client configuration in directory `config.d`.
