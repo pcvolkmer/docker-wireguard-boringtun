@@ -11,6 +11,8 @@ Using BoringTun enables the use of a userspace implementation on hosts that do n
 Required configuration files will be generated on first run using environment variables. Client configurations are
 available as config files and QR codes.
 
+In addition to BoringTun, dnsmasq is included to provide dns forwarding and to resolve host names trough VPN.
+
 ## Build
 
 When creating the image, BoringTun is compiled in a docker build stage and later copied into final image.
