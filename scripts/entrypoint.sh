@@ -76,7 +76,7 @@ case "$1" in
     echo "help    Show this help message"
     echo
     ;;
-  *)
+  ''|'start')
     if [ ! -f "/etc/wireguard/$DEVICE.conf" ]; then
       cd /etc/wireguard
       /scripts/create-config.sh
@@ -90,5 +90,12 @@ case "$1" in
     dnsmasq -D --hostsdir=/etc/wireguard/hosts.d
     echo "done!"
     tail -f "${WG_LOG_FILE}"
+    ;;
+  *)
+    echo "Usage: docker-compose run wg {ls|add|rm|show|init|purge|help}"
+    echo "   or: docker-compose run wg start"
+    echo "       docker-compose up [-d]"
+    echo "   to start services"
+    exit 1
     ;;
 esac
