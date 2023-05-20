@@ -53,6 +53,10 @@ else
   echo " - Do not forward all traffic"
 fi
 
+if [[ -z $CLIENTS ]]; then
+  CLIENTS=0
+fi
+
 if (( $CLIENTS > 240 )); then
   CLIENTS=240
 fi
