@@ -54,6 +54,7 @@ else
 fi
 
 if [[ -z $CLIENTS ]]; then
+  echo " - No value for 'CLIENTS'. Use command 'add' to add a client."
   CLIENTS=0
 fi
 
