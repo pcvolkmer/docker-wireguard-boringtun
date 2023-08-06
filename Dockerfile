@@ -1,8 +1,8 @@
-FROM rust:slim AS build
+FROM rust:alpine AS build
 
-RUN rustup target add x86_64-unknown-linux-musl
-RUN apt update && apt install -y musl-tools musl-dev
-RUN cargo install --target x86_64-unknown-linux-musl boringtun-cli
+RUN apk update
+RUN apk add cmake make musl-dev g++
+RUN cargo install boringtun-cli
 
 ###
 
