@@ -18,7 +18,7 @@ RUN apk --update add iproute2 wireguard-tools-wg-quick libqrencode dnsmasq
 WORKDIR /scripts
 
 LABEL org.opencontainers.image.description="WireGuard docker setup using BoringTun"
-LABEL org.opencontainers.image.source = "https://github.com/pcvolkmer/docker-wireguard-boringtun"
+LABEL org.opencontainers.image.source="https://github.com/pcvolkmer/docker-wireguard-boringtun"
 
 COPY --from=build /usr/local/cargo/bin/boringtun-cli /usr/local/bin/boringtun
 COPY scripts/ ./
